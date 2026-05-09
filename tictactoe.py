@@ -23,12 +23,14 @@ def grid():
 
 def drawx(x, y):
     """Draw X player."""
+    color("blue")
     line(x, y, x + 133, y + 133)
     line(x, y + 133, x + 133, y)
 
 
 def drawo(x, y):
     """Draw O player."""
+    color("red")
     up()
     goto(x + 67, y + 5)
     down()
@@ -43,16 +45,27 @@ def floor(value):
 state = {'player': 0}
 players = [drawx, drawo]
 
+state['ocupado'] = set()
+
 
 def tap(x, y):
-    """Draw X or O in tapped square."""
+    """Draw X or O in tapped square.
+    """
     x = floor(x)
     y = floor(y)
+
+    if (x, y) in state['ocupado']:
+        return
+
     player = state['player']
     draw = players[player]
     draw(x, y)
+
+    state['ocupado'].add((x, y))
+
     update()
     state['player'] = not player
+
 
 
 setup(420, 420, 370, 0)
